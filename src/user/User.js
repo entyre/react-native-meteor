@@ -5,6 +5,7 @@ import { hashPassword } from "../../lib/utils";
 import call from "../Call";
 
 const TOKEN_KEY = "reactnativemeteor_usertoken";
+const USER_ID_KEY = "reactnativemeteor_userid";
 
 let userIdSaved = null;
 
@@ -35,6 +36,7 @@ module.exports = {
     },
     handleLogout() {
         SecureStore.deleteItemAsync(TOKEN_KEY);
+        SecureStore.deleteItemAsync(USER_ID_KEY);
         Data._tokenIdSaved = null;
         userIdSaved = null;
     },
@@ -90,6 +92,7 @@ module.exports = {
     _handleLoginCallback(err, result) {
         if (!err) {//save user id and token
             SecureStore.setItemAsync(TOKEN_KEY, result.token);
+            SecureStore.setItemAsync(USER_ID_KEY, result.id);
             Data._tokenIdSaved = result.token;
             userIdSaved = result.id;
             Data.notify("onLogin");
@@ -114,13 +117,52 @@ module.exports = {
     getAuthToken() {
         return Data._tokenIdSaved;
     },
+    async restoreSession() {
+        if (Data.ddp && Data.ddp.status === "connected") {
+            console.log("restoreSession: using server (online)");
+
+            await this._loadInitialUser();
+            console.log("restoreSession: result unknown, used online server");
+        } else {
+            console.log("restoreSession: using stored token and userId (offline)");
+
+            const token = await SecureStore.getItemAsync(TOKEN_KEY);
+            const userId = await SecureStore.getItemAsync(USER_ID_KEY);
+
+            if (token && userId) {
+                this._startLoggingIn();
+
+                // ... we do not call the server here, because we are not connected
+
+                this._endLoggingIn();
+
+                Data._tokenIdSaved = token;
+                userIdSaved = userId;
+                Data.notify("onLogin");
+
+                Data.notify("change");
+                console.log("restoreSession: success");
+            } else {
+                // either incomplete or missing session data
+                // -> reset session
+
+                Data.notify("onLoginFailure");
+                this.handleLogout();
+                Data.notify("change");
+
+                console.log(`restoreSession: imcomplete session (${token}, ${userId})`);
+            }
+        }
+    },
     async _loadInitialUser() {
         var value = null;
         try {
+            console.log("restore session: getItemAsync");
             value = await SecureStore.getItemAsync(TOKEN_KEY);
         } catch (error) {
             console.warn("AsyncStorage error: " + error.message);
         } finally {
+            console.log("restore session: _loginWithToken with " + value);
             this._loginWithToken(value);
         }
 
