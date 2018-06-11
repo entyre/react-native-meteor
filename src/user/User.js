@@ -150,7 +150,7 @@ module.exports = {
                 this.handleLogout();
                 Data.notify("change");
 
-                console.log(`restoreSession: imcomplete session (${token}, ${userId})`);
+                console.log(`restoreSession: incomplete session (${token}, ${userId})`);
             }
         }
     },
@@ -160,7 +160,7 @@ module.exports = {
             console.log("restore session: getItemAsync");
             value = await SecureStore.getItemAsync(TOKEN_KEY);
         } catch (error) {
-            console.warn("AsyncStorage error: " + error.message);
+            console.warn("restore session error: " + error.message);
         } finally {
             console.log("restore session: _loginWithToken with " + value);
             this._loginWithToken(value);
