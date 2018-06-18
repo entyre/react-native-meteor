@@ -16,10 +16,7 @@ module.exports = {
         return this.collection("users").findOne(userIdSaved);
     },
     userId() {
-        if (!userIdSaved) return null;
-
-        const user = this.collection("users").findOne(userIdSaved);
-        return user && user._id;
+        return userIdSaved;
     },
     _isLoggingIn: true,
     loggingIn() {
