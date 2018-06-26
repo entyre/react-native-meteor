@@ -23,13 +23,24 @@ module.exports = {
         return this._isLoggingIn;
     },
     logout(callback) {
-        call("logout", err => {
+        const afterLogout = (err) => {
             this.handleLogout();
             this.connect();
             Data.notify("onLogout");
 
-            typeof callback == "function" && callback(err);
-        });
+            typeof callback === "function" && callback(err);
+        };
+
+        if (Data.ddp && Data.ddp.status === "connected") {
+            call("logout", err => {
+                afterLogout(err);
+            });
+        } else {
+            // not connected to server
+            // just delete local session
+
+            afterLogout(null);
+        }
     },
     handleLogout() {
         SecureStore.deleteItemAsync(TOKEN_KEY);
