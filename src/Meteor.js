@@ -9,7 +9,7 @@ import Random from '../lib/Random';
 
 import Data from './Data';
 import { Collection } from './Collection';
-import call from './Call';
+import call, { apply } from './Call';
 
 import Mixin from './components/Mixin';
 import MeteorListView from './components/ListView';
@@ -56,6 +56,7 @@ module.exports = {
     }
   },
   call: call,
+  apply: apply,
   disconnect() {
     if(Data.ddp) {
       Data.ddp.disconnect();

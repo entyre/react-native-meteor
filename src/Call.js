@@ -13,3 +13,11 @@ export default function(eventName) {
     callback: callback
   });
 }
+
+export function apply(eventName, args, callback) {
+    const id = Data.ddp.method(eventName, args);
+    Data.calls.push({
+        id: id,
+        callback: callback
+    });
+}
