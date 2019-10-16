@@ -50,6 +50,7 @@
   },
   "peerDependencies": {
     "expo": "*",
+    "expo-secure-store": "*",
     "react": "*",
     "react-native": "*"
   }

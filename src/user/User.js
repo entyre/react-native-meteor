@@ -1,5 +1,4 @@
-import { SecureStore } from "expo";
-
+import * as SecureStore from "expo-secure-store"
 import Data from "../Data";
 import { hashPassword } from "../../lib/utils";
 import call from "../Call";
