@@ -49,9 +49,10 @@
     "sinon": "^1.17.3"
   },
   "peerDependencies": {
-    "expo": "*",
-    "expo-secure-store": "*",
-    "react": "*",
-    "react-native": "*"
+    "expo": "^37.0.12",
+    "expo-secure-store": "^8.1.0",
+    "react": "^16.9.0",
+    "react-native": "0.62.2",
+    "@react-native-community/netinfo": "5.5.1"
   }
 }
