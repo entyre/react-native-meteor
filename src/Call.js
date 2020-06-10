@@ -6,6 +6,12 @@ export default function(eventName) {
     var callback = args.pop();
   }
 
+  if (!Data.ddp) {
+      throw new Error(
+          "Data.ddp is null. " +
+          "Please wait for ddp to be initialized before calling the server! " +
+          "Was about to call " + eventName + " with " + args.join(";"));
+  }
 
   const id = Data.ddp.method(eventName, args);
   Data.calls.push({
@@ -15,6 +21,13 @@ export default function(eventName) {
 }
 
 export function apply(eventName, args, callback) {
+    if (!Data.ddp) {
+        throw new Error(
+            "Data.ddp is null. " +
+            "Please wait for ddp to be initialized before calling the server! " +
+            "Was about to apply " + eventName + " with " + args.join(";"));
+    }
+
     const id = Data.ddp.method(eventName, args);
     Data.calls.push({
         id: id,
