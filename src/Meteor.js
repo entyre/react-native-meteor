@@ -25,8 +25,10 @@ import ReactiveDict from './ReactiveDict';
 import User from './user/User';
 import Accounts from './user/Accounts';
 
+import { registerEJsonObjectId } from "../lib/mongo-id";
 
 module.exports = {
+  registerEJsonObjectId,
   composeWithTracker,
   Accounts,
   Tracker: Trackr,
