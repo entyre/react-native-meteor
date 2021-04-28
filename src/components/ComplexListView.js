@@ -23,7 +23,7 @@ export default class MeteorListView extends Component {
       })
     };
   }
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     const { elements } = props;
 
     const elems = elements();
@@ -32,7 +32,7 @@ export default class MeteorListView extends Component {
     });
 
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
 
     const { elements } = this.props;
 

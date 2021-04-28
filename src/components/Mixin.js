@@ -3,7 +3,7 @@ import EJSON from 'ejson';
 import Data from '../Data';
 
 export default {
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
 
     Data.waitDdpReady(()=>{
       if(this.getMeteorData) {
@@ -16,7 +16,7 @@ export default {
 
 
   },
-  componentWillUpdate(nextProps, nextState) {
+  UNSAFE_componentWillUpdate(nextProps, nextState) {
 
     if(this.startMeteorSubscriptions) {
       if(!EJSON.equals(this.state, nextState) || !EJSON.equals(this.props, nextProps)) {
